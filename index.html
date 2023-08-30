@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ID Generator</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -8,6 +9,7 @@
       padding: 20px;
       background-color: #f5f5f5;
     }
+
     .id-card {
       width: 400px;
       height: 250px;
@@ -21,12 +23,17 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div class="row">
       <div class="col-md-6 mx-auto">
         <h1 class="text-center">ID Generator</h1>
         <form>
+          <div class="form-group">
+            <label for="license-title">License Title:</label>
+            <input type="text" class="form-control" id="license-title" placeholder="Enter the license title">
+          </div>
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" placeholder="Enter your name">
@@ -35,15 +42,9 @@
             <label for="subname">Subname:</label>
             <input type="text" class="form-control" id="subname" placeholder="Enter your subname">
           </div>
-
           <div class="form-group">
             <label for="gender">Gender:</label>
             <input type="text" class="form-control" id="gender" placeholder="Enter your gender">
-          </div>
-          
-          <div class="form-group">
-            <label for="profile-picture">Upload Profile Picture:</label>
-            <input type="file" class="form-control-file" id="profile-picture" accept="image/*">
           </div>
           <!-- More input fields to follow... -->
         </form>
@@ -60,6 +61,11 @@
           <input type="file" class="form-control-file" id="background-image" accept="image/*">
         </div>
         <div class="form-group">
+          <label for="profile-picture">Upload Profile Picture:</label>
+          <input type="file" class="form-control-file" id="profile-picture" accept="image/*">
+        </div>
+
+        <div class="form-group">
           <label for="font">Select Font:</label>
           <select class="form-control" id="font">
             <option value="Arial, sans-serif">Arial (Default)</option>
@@ -75,9 +81,12 @@
           <input type="color" class="form-control" id="font-color" value="#000000">
         </div>
         <div class="form-group">
-            <label for="shadow-color">Text Shadow Color:</label>
-            <input type="color" class="form-control" id="shadow-color" value="#000000">
-          </div>
+          <label for="shadow-color">Text Shadow Color:</label>
+          <input type="color" class="form-control" id="shadow-color" value="#000000">
+        </div>
+        <button class="btn btn-primary" onclick="generateID()">Generate ID</button>
+        <button class="btn btn-success download-button" onclick="downloadIDCard()">Download ID Card</button>
+        <div id="output"></div>
         <div class="form-group">
           <label for="width">Card Width (px):</label>
           <input type="number" class="form-control" id="width" value="400">
@@ -86,40 +95,29 @@
           <label for="height">Card Height (px):</label>
           <input type="number" class="form-control" id="height" value="250">
         </div>
-        <div class="form-group">
-          <label for="aspect-ratio">Card Aspect Ratio:</label>
-          <input type="number" class="form-control" id="aspect-ratio" value="1.6">
-        </div>
-        <div class="form-group">
-          <label for="license-title">License Title:</label>
-          <input type="text" class="form-control" id="license-title" placeholder="Enter the license title">
-        </div>
-        <button class="btn btn-primary" onclick="generateID()">Generate ID</button>
-        <div id="output"></div>
-        <button class="btn btn-success download-button" onclick="downloadIDCard()">Download ID Card</button>
       </div>
     </div>
   </div>
   <script>
-function generateID() {
-  // Get values from input fields
-  var name = document.getElementById('name').value;
-  var subname = document.getElementById('subname').value;
-  var profilePicture = URL.createObjectURL(document.getElementById('profile-picture').files[0]);
-  var since = document.getElementById('since').value;
-  var expires = document.getElementById('expires').value;
-  var backgroundImage = URL.createObjectURL(document.getElementById('background-image').files[0]);
-  var font = document.getElementById('font').value;
-  var fontColor = document.getElementById('font-color').value;
-  var width = document.getElementById('width').value;
-  var height = document.getElementById('height').value;
-  var licenseTitle = document.getElementById('license-title').value;
-  var shadowColor = document.getElementById('shadow-color').value;
-  var gender = document.getElementById('gender').value;
-  var idCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+    function generateID() {
+      // Get values from input fields
+      var name = document.getElementById('name').value;
+      var subname = document.getElementById('subname').value;
+      var profilePicture = URL.createObjectURL(document.getElementById('profile-picture').files[0]);
+      var since = document.getElementById('since').value;
+      var expires = document.getElementById('expires').value;
+      var backgroundImage = URL.createObjectURL(document.getElementById('background-image').files[0]);
+      var font = document.getElementById('font').value;
+      var fontColor = document.getElementById('font-color').value;
+      var width = document.getElementById('width').value;
+      var height = document.getElementById('height').value;
+      var licenseTitle = document.getElementById('license-title').value;
+      var shadowColor = document.getElementById('shadow-color').value;
+      var gender = document.getElementById('gender').value;
+      var idCode = Math.random().toString(36).substr(2, 8).toUpperCase();
 
-  // Generate the ID card
-  var idCardHTML = `
+      // Generate the ID card
+      var idCardHTML = `
     <div class="id-card" style="width: ${width}px; height: ${height}px; font-family: ${font}; color: ${fontColor}; background-image: url('${backgroundImage}'); background-size: cover; background-position: center;">
       <strong class="id-card-title" style="position: absolute; top: 10px; left: 20px; font-size: 24px; font-weight: bold; text-shadow: -2px -2px 3px ${shadowColor}, 2px -2px 3px ${shadowColor}, -2px 2px 3px ${shadowColor}, 2px 2px 3px ${shadowColor};">${licenseTitle}</strong>
       <div style="position: absolute; top: 60px; left: 20px;"> <!-- Increased top value here -->
@@ -137,15 +135,16 @@ function generateID() {
 
 
 
-  // Render the ID card in the output div
-  document.getElementById('output').innerHTML = idCardHTML;
-}
+      // Render the ID card in the output div
+      document.getElementById('output').innerHTML = idCardHTML;
+    }
 
-  
+
     function downloadIDCard() {
       // Code to download the generated ID card as an image or file
     }
   </script>
-  
+
 </body>
+
 </html>
